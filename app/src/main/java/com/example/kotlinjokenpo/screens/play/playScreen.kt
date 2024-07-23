@@ -70,18 +70,25 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
         }
     }
 
+    var countdownFinished by remember { mutableStateOf(false) }
+
     if (ready && countdown > 0 && !gameFinished) {
         CountdownTimer(
-            countdownState = remember { mutableStateOf(countdown) },
-            onCountdownFinish = {
-                gameFinished = true
-                resultMessage = determineWinner(playerChoice, player2Choice)
-                Log.d("PlayScreen", "Countdown finished. Player Choice: $playerChoice, Player 2 Choice: $player2Choice, Result: $resultMessage")
-            },
+            countdownState = remember { mutableIntStateOf(countdown) },
             onCountdownUpdate = { updatedCountdown ->
                 countdown = updatedCountdown
+                if (updatedCountdown == 0) {
+                    countdownFinished = true
+                }
             }
         )
+    }
+
+    if (countdownFinished && !gameFinished) {
+        // This block will only be called once when the countdown reaches zero
+        gameFinished = true
+        resultMessage = determineWinner(playerChoice, player2Choice)
+        Log.d("PlayScreen", "Countdown finished. Player Choice: $playerChoice, Player 2 Choice: $player2Choice, Result: $resultMessage")
     }
 
     // UI AREA ===============================================================================
@@ -152,7 +159,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp ),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     IconAndLabelButton(
@@ -163,6 +170,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             if (countdown > 0) {
                                 playerChoice = 0
                             }
+                            Log.d("PlayScreen", "BUTTON PRESSED: playerChoice = $playerChoice")
                         }
                     )
                     IconAndLabelButton(
@@ -173,6 +181,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             if (countdown > 0) {
                                 playerChoice = 1
                             }
+                            Log.d("PlayScreen", "BUTTON PRESSED: playerChoice = $playerChoice")
                         }
                     )
                 }
@@ -189,6 +198,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             if (countdown > 0) {
                                 playerChoice = 2
                             }
+                            Log.d("PlayScreen", "BUTTON PRESSED: playerChoice = $playerChoice")
                         }
                     )
                 }
@@ -209,6 +219,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             playerChoice = -1
                             player2Choice = generateRandomChoice()
                             resultMessage = ""
+                            countdownFinished = false
                             // Reset game state or navigate to a new game
                         } else {
                             ready = true
