@@ -1,4 +1,4 @@
-package com.example.kotlinjokenpo.screens.play
+package com.example.kotlinjokenpo.screens.multiPlayer
 
 import LottieAnimationView
 import android.util.Log
@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -38,21 +37,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.kotlinjokenpo.R
 import com.example.kotlinjokenpo.components.IconAndLabelButton
-import com.example.kotlinjokenpo.data.JokenPoGame
-//import com.example.kotlinjokenpo.services.firebase.FirestoreRepository
 import com.example.kotlinjokenpo.ui.theme.KotlinJOKENPOTheme
 import com.example.kotlinjokenpo.utils.CountdownTimer
 import com.example.kotlinjokenpo.utils.determineWinner
 import com.example.kotlinjokenpo.utils.generateRandomChoice
 
 @Composable
-fun PlayScreen(navController: NavController, modifier: Modifier, multiplayer: Boolean) {
-    val gameId = "1211"
-    var game by remember { mutableStateOf(JokenPoGame(gameId = gameId)) }
+fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
     var ready by remember { mutableStateOf(false) }
     var gameFinished by remember { mutableStateOf(false) }
     var countdown by remember { mutableStateOf(6) }
@@ -79,19 +73,6 @@ fun PlayScreen(navController: NavController, modifier: Modifier, multiplayer: Bo
         resultMessage = determineWinner(playerChoice, player2Choice)
         Log.d("PlayScreen", "Countdown finished. Player Choice: $playerChoice, Player 2 Choice: $player2Choice, Result: $resultMessage")
     }
-    // =======================================================================================
-    // MULTIPLAYER AREA
-    DisposableEffect(gameId) {
-        val listenerRegistration = setupGame(gameId) { updatedGame ->
-            if (updatedGame != null) {
-                game = updatedGame
-            }
-        }
-        onDispose {
-            listenerRegistration.remove()
-        }
-    }
-
     // UI AREA ===============================================================================
     Box(
         modifier = modifier
@@ -253,6 +234,6 @@ fun PreviewNewComponent() {
 
     KotlinJOKENPOTheme {
         val multiplayer = false
-        PlayScreen(navController = navController, modifier = Modifier, multiplayer = multiplayer)
+        MultiPlayerScreen(navController = navController, modifier = Modifier)
     }
 }

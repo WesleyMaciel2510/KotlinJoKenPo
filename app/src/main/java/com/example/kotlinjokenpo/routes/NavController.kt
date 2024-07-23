@@ -6,7 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.kotlinjokenpo.screens.home.HomeScreen
-import com.example.kotlinjokenpo.screens.play.PlayScreen
+import com.example.kotlinjokenpo.screens.singlePlayer.SinglePlayerScreen
+import com.example.kotlinjokenpo.screens.multiPlayer.MultiPlayerScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -14,9 +15,11 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         composable("home") {
             HomeScreen(navController = navController,  modifier = Modifier)
         }
-        composable("play/{multiplayer}") { backStackEntry ->
-            val multiplayer = backStackEntry.arguments?.getString("multiplayer")?.toBoolean() ?: false
-            PlayScreen(navController = navController, modifier = Modifier, multiplayer = multiplayer)
+        composable("singlePlayer") {
+            SinglePlayerScreen(navController = navController, modifier = Modifier)
+        }
+        composable("multiPlayer") {
+            MultiPlayerScreen(navController = navController, modifier = Modifier)
         }
     }
 }

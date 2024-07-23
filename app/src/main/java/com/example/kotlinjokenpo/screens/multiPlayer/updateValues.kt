@@ -1,4 +1,4 @@
-package com.example.kotlinjokenpo.screens.play
+package com.example.kotlinjokenpo.screens.multiPlayer
 
 import com.google.firebase.firestore.FirebaseFirestore
 

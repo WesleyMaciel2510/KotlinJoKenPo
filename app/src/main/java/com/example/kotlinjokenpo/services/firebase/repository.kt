@@ -1,3 +1,4 @@
+/*
 package com.example.kotlinjokenpo.services.firebase
 
 import com.example.kotlinjokenpo.data.JokenPoGame
@@ -50,3 +51,4 @@ class FirestoreRepository {
             }
     }
 }
+*/
