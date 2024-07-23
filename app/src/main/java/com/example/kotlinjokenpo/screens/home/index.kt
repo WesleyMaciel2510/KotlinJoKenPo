@@ -62,7 +62,7 @@ fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                 onClick = {
                     Log.d("button", "Button onSinglePlayerClick Clicked ")
                     /*onSinglePlayerClick,*/
-                    navController.navigate("play")
+                    navController.navigate("play/false")
                 })
 
             IconAndLabelButton(buttonLabel = "Multi Player",
@@ -71,7 +71,7 @@ fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                 onClick = {
                     Log.d("button", "Button onMultiPlayerClick Clicked ")
                     /*onMultiPlayerClick*/
-                    navController.navigate("play")
+                    navController.navigate("play/true")
                 })
         }
     }

@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.kotlinjokenpo.R
@@ -49,7 +50,7 @@ import com.example.kotlinjokenpo.utils.determineWinner
 import com.example.kotlinjokenpo.utils.generateRandomChoice
 
 @Composable
-fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) {
+fun PlayScreen(navController: NavController, modifier: Modifier, multiplayer: Boolean) {
     val gameId = "1211"
     var game by remember { mutableStateOf(JokenPoGame(gameId = gameId)) }
     var ready by remember { mutableStateOf(false) }
@@ -58,7 +59,28 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
     var playerChoice by remember { mutableStateOf(-1) } // -1 indicates no choice made
     var player2Choice by remember { mutableStateOf(generateRandomChoice()) }
     var resultMessage by remember { mutableStateOf("") }
+    var countdownFinished by remember { mutableStateOf(false) }
 
+    if (ready && countdown > 0 && !gameFinished) {
+        CountdownTimer(
+            countdownState = remember { mutableIntStateOf(countdown) },
+            onCountdownUpdate = { updatedCountdown ->
+                countdown = updatedCountdown
+                if (updatedCountdown == 0) {
+                    countdownFinished = true
+                }
+            }
+        )
+    }
+
+    if (countdownFinished && !gameFinished) {
+        // This block will only be called once when the countdown reaches zero
+        gameFinished = true
+        resultMessage = determineWinner(playerChoice, player2Choice)
+        Log.d("PlayScreen", "Countdown finished. Player Choice: $playerChoice, Player 2 Choice: $player2Choice, Result: $resultMessage")
+    }
+    // =======================================================================================
+    // MULTIPLAYER AREA
     DisposableEffect(gameId) {
         val listenerRegistration = setupGame(gameId) { updatedGame ->
             if (updatedGame != null) {
@@ -68,20 +90,6 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
         onDispose {
             listenerRegistration.remove()
         }
-    }
-
-    if (ready && countdown > 0 && !gameFinished) {
-        CountdownTimer(
-            countdownState = remember { mutableStateOf(countdown) },
-            onCountdownFinish = {
-                gameFinished = true
-                resultMessage = determineWinner(playerChoice, player2Choice)
-                Log.d("PlayScreen", "Countdown finished. Player Choice: $playerChoice, Player 2 Choice: $player2Choice, Result: $resultMessage")
-            },
-            onCountdownUpdate = { updatedCountdown ->
-                countdown = updatedCountdown
-            }
-        )
     }
 
     // UI AREA ===============================================================================
@@ -152,7 +160,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp ),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     IconAndLabelButton(
@@ -163,6 +171,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             if (countdown > 0) {
                                 playerChoice = 0
                             }
+                            Log.d("PlayScreen", "BUTTON PRESSED: playerChoice = $playerChoice")
                         }
                     )
                     IconAndLabelButton(
@@ -173,6 +182,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             if (countdown > 0) {
                                 playerChoice = 1
                             }
+                            Log.d("PlayScreen", "BUTTON PRESSED: playerChoice = $playerChoice")
                         }
                     )
                 }
@@ -189,6 +199,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             if (countdown > 0) {
                                 playerChoice = 2
                             }
+                            Log.d("PlayScreen", "BUTTON PRESSED: playerChoice = $playerChoice")
                         }
                     )
                 }
@@ -209,6 +220,7 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                             playerChoice = -1
                             player2Choice = generateRandomChoice()
                             resultMessage = ""
+                            countdownFinished = false
                             // Reset game state or navigate to a new game
                         } else {
                             ready = true
@@ -240,6 +252,7 @@ fun PreviewNewComponent() {
     val navController = rememberNavController()
 
     KotlinJOKENPOTheme {
-        PlayScreen(navController = navController)
+        val multiplayer = false
+        PlayScreen(navController = navController, modifier = Modifier, multiplayer = multiplayer)
     }
 }

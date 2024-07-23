@@ -3,8 +3,8 @@ package com.example.kotlinjokenpo.utils
 fun determineWinner(playerChoice: Int, player2Choice: Int): String {
     // Map integers to their corresponding choice names
     val choiceLabels = mapOf(
-        0 to "Paper",
-        1 to "Rock",
+        0 to "Rock",
+        1 to "Paper",
         2 to "Scissors"
     )
 

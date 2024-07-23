@@ -10,12 +10,13 @@ import com.example.kotlinjokenpo.screens.play.PlayScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
-    NavHost(navController = navController, startDestination = "play") {
+    NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             HomeScreen(navController = navController,  modifier = Modifier)
         }
-        composable("play") {
-            PlayScreen(navController = navController, modifier = Modifier)
+        composable("play/{multiplayer}") { backStackEntry ->
+            val multiplayer = backStackEntry.arguments?.getString("multiplayer")?.toBoolean() ?: false
+            PlayScreen(navController = navController, modifier = Modifier, multiplayer = multiplayer)
         }
     }
 }
