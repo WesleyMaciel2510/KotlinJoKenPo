@@ -2,10 +2,13 @@ package com.example.kotlinjokenpo.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+//Dark Theme
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
+val NightBlack = Color(0xFF141414)
 
+//Light Theme
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
@@ -20,5 +23,4 @@ val Blue50 = Color(0XFF4596A8)
 val Green40 = Color(0xFF20963f)
 val White = Color(0xFFFFFFFF)
 
-val NightBlack = Color(0xFF141414)
 val BgBorder = Color(0xFF235789)

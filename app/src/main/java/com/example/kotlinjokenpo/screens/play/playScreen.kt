@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,7 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.kotlinjokenpo.components.IconAndLabelButton
 import com.example.kotlinjokenpo.ui.theme.KotlinJOKENPOTheme
+import com.example.kotlinjokenpo.ui.theme.LightColorScheme
 
 @Composable
 fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -22,11 +26,14 @@ fun PlayScreen(navController: NavHostController, modifier: Modifier = Modifier) 
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            navController.navigate("home")
-        }) {
-            Text("Go to HomeScreen")
-        }
+        IconAndLabelButton(
+            //iconName = Icons.Default.AddCircle,
+            buttonLabel = "BUY TICKETS",
+            buttonColor = LightColorScheme.secondary,
+            onClick = {
+                navController.navigate("home")
+            }
+        )
     }
 }
 

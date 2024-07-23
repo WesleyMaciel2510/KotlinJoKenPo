@@ -9,14 +9,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.kotlinjokenpo.routes.AppNavigation
+import com.example.kotlinjokenpo.ui.theme.DarkColorScheme
 import com.example.kotlinjokenpo.ui.theme.KotlinJOKENPOTheme
 import com.example.kotlinjokenpo.ui.theme.LightColorScheme
 
@@ -45,20 +50,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(startDestination: String = "home") {
     val navController = rememberNavController()
     Scaffold(
         // add here what is fixed
-        /*bottomBar = {
-            BottomNavigationBar(navController = navController)
-        }*/
+        topBar = {
+            TopAppBar(
+                title = { Text("Jo-Ken-Po") },
+                Modifier.background(Color(0xFF7F44D4)),
+                //contentColor = Color.White
+            )
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(color = LightColorScheme.background)
+                .background(color = DarkColorScheme.background)
         ) {
             AppNavigation(navController = navController, modifier = Modifier.weight(1f))
         }
