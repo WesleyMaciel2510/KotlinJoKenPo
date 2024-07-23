@@ -21,14 +21,19 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.kotlinjokenpo.routes.AppNavigation
+import com.example.kotlinjokenpo.services.firebase.checkConnection
 import com.example.kotlinjokenpo.ui.theme.DarkColorScheme
 import com.example.kotlinjokenpo.ui.theme.KotlinJOKENPOTheme
-import com.example.kotlinjokenpo.ui.theme.LightColorScheme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Firebase Startup
+        FirebaseApp.initializeApp(this)
+        checkConnection()
+
         enableEdgeToEdge()
 
         // Set navigation bar color to black
@@ -52,7 +57,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(startDestination: String = "home") {
+fun App() {
     val navController = rememberNavController()
     Scaffold(
         // add here what is fixed

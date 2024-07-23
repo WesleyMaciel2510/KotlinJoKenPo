@@ -10,7 +10,7 @@ import com.example.kotlinjokenpo.screens.play.PlayScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "play") {
         composable("home") {
             HomeScreen(navController = navController,  modifier = Modifier)
         }

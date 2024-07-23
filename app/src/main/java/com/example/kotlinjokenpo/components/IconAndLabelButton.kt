@@ -34,9 +34,8 @@ fun IconAndLabelButton(
     Button(
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()
             .height(72.dp)
-            .padding(horizontal = 30.dp, vertical = 10.dp)
+            .padding(horizontal = 8.dp)
             .border(
                 width = if (borderColor != null) 2.dp else 0.dp,
                 color = borderColor ?: Color.Transparent,
@@ -53,7 +52,7 @@ fun IconAndLabelButton(
                 Icon(
                     imageVector = iconName,
                     contentDescription = "Icon",
-                    tint = Color.White,
+                    tint = Color.Black,
                     modifier = Modifier.size(28.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -63,7 +62,7 @@ fun IconAndLabelButton(
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.Black
                 )
             )
         }

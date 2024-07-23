@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -64,13 +65,16 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-
-
+    implementation ("com.google.firebase:firebase-core:21.0.0")
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
-    implementation("com.google.firebase:firebase-analytics")
+    // Add the dependency for the Realtime Database library
+    implementation("com.google.firebase:firebase-database")
+    implementation(libs.firebase.firestore.ktx)
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
+    //LottieView Animations
+    implementation ("com.airbnb.android:lottie-compose:5.0.3")
     // end new libs
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
