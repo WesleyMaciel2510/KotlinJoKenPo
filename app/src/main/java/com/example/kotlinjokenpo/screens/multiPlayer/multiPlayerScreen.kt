@@ -89,8 +89,8 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
     // PLAYER STATUS LISTENER ===========================================
     val playersStatus = remember { mutableStateOf(
         PlayersStatus(
-        player1 = PlayerStatus(online = false, ready = false, choice = ""),
-        player2 = PlayerStatus(online = false, ready = false, choice = "")
+        player1 = PlayerStatus(online = false, ready = false, choice = -1),
+        player2 = PlayerStatus(online = false, ready = false, choice = -1)
         )
     ) }
     //Text to Display
@@ -132,8 +132,8 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
     if (countdownFinished && !gameFinished) {
         // This block will only be called once when the countdown reaches zero
         gameFinished = true
-        resultMessage = determineWinner(player1Choice, player2Choice)
-        Log.d("PlayScreen", "Countdown finished. Player Choice: $player1Choice, Player 2 Choice: $player2Choice, Result: $resultMessage")
+        resultMessage = determineWinner(playersStatus.value.player1.choice, playersStatus.value.player2.choice)
+        Log.d("PlayScreen", "Countdown finished. Player Choice: ${playersStatus.value.player1.choice}, Player 2 Choice: ${playersStatus.value.player2.choice}, Result: $resultMessage")
     }
     // CREATE OR SELECT ROOM =======================================================================
     val configuration = LocalConfiguration.current
@@ -267,7 +267,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-
+                if (!ready){
                 Text(
                     text ="$playerOnlineText\n$playerReadyText",
                     style = TextStyle(
@@ -276,16 +276,25 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                         fontSize = 22.sp
                     ),
                     textAlign = TextAlign.Center
-                )
+                )}
 
                 if (ready) {
-                    Text(
-                        text = when (player1Choice) {
+                    fun getChoiceText(choice: Int): String {
+                        return when (choice) {
                             0 -> "You chose Rock"
                             1 -> "You chose Paper"
                             2 -> "You chose Scissors"
                             else -> "Make a choice"
-                        },
+                        }
+                    }
+
+                    val choiceText = if (player == 1) {
+                        getChoiceText(player1Choice)
+                    } else {
+                        getChoiceText(player2Choice)
+                    }
+                    Text(
+                        text = choiceText,
                         style = TextStyle(
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
@@ -310,7 +319,12 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                             buttonColor = Color(0xFF03A9F4),
                             onClick = {
                                 if (countdown > 0) {
-                                    player1Choice = 0
+                                    if (player == 1) {
+                                        player1Choice = 0
+                                    } else {
+                                        player2Choice = 0
+                                    }
+                                    updatePlayerStatus(player = player, roomNumber = roomNumber.toString(), choice = 0)
                                 }
                                 Log.d(
                                     "PlayScreen",
@@ -324,7 +338,12 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                             buttonColor = Color(0xFFF7D119),
                             onClick = {
                                 if (countdown > 0) {
-                                    player1Choice = 1
+                                    if (player == 1) {
+                                        player1Choice = 1
+                                    } else {
+                                        player2Choice = 1
+                                    }
+                                    updatePlayerStatus(player = player, roomNumber = roomNumber.toString(), choice = 1)
                                 }
                                 Log.d(
                                     "PlayScreen",
@@ -344,7 +363,12 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                             buttonColor = Color(0xFFFF6F6F),
                             onClick = {
                                 if (countdown > 0) {
-                                    player1Choice = 2
+                                    if (player == 1) {
+                                        player1Choice = 2
+                                    } else {
+                                        player2Choice = 2
+                                    }
+                                    updatePlayerStatus(player = player, roomNumber = roomNumber.toString(), choice = 2)
                                 }
                                 Log.d(
                                     "PlayScreen",
@@ -369,7 +393,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                                 ready = false
                                 countdown = 6
                                 player1Choice = -1
-                                player2Choice = generateRandomChoice()
+                                player2Choice = -1
                                 resultMessage = ""
                                 countdownFinished = false
                                 // Reset game state or navigate to a new game
@@ -377,7 +401,9 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                                 //set ready in 'player'
                                 updatePlayerStatus(player = player, roomNumber = roomNumber.toString(), isReady = true)
                                 //check if the both players are ready
-
+                                if (playersStatus.value.player1.ready  && playersStatus.value.player2.ready){
+                                    ready = true
+                                }
                             }
                         })
                 }

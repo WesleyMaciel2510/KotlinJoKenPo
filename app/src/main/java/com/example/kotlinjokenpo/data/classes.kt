@@ -8,5 +8,5 @@ data class PlayersStatus(
 data class PlayerStatus(
     val online: Boolean,
     val ready: Boolean,
-    val choice: String,
+    val choice: Int,
 )

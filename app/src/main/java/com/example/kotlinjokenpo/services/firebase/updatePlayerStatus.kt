@@ -3,7 +3,7 @@ package com.example.kotlinjokenpo.services.firebase
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
 
-fun updatePlayerStatus(player: Int, roomNumber: String, isReady: Boolean? = null, choice: String? = null) {
+fun updatePlayerStatus(player: Int, roomNumber: String, isReady: Boolean? = null, choice: Int? = null) {
     val database = FirebaseDatabase.getInstance()
 
     // Construct the path based on the player number

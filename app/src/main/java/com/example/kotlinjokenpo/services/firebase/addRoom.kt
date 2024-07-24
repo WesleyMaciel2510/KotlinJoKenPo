@@ -18,13 +18,13 @@ fun addNewRoom(roomNumber: String,  callback: (Boolean) -> Unit) {
         "players" to mapOf(
             "player1" to mapOf(
                 "name" to "Player 1",
-                "choice" to "",
+                "choice" to -1,
                 "ready" to false,
                 "online" to true,
             ),
             "player2" to mapOf(
                 "name" to "Player 2",
-                "choice" to "",
+                "choice" to -1,
                 "ready" to false,
                 "online" to false,
             )

@@ -20,8 +20,8 @@ fun playersStatusListener(roomNumber: String): StateFlow<PlayersStatus> {
 
     val playersStatus = remember { MutableStateFlow(
         PlayersStatus(
-            player1 = PlayerStatus(online = false, ready = false, choice = ""),
-            player2 = PlayerStatus(online = false, ready = false, choice = "")
+            player1 = PlayerStatus(online = false, ready = false, choice = -1),
+            player2 = PlayerStatus(online = false, ready = false, choice = -1)
         )
     ) }
 
