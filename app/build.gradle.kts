@@ -75,6 +75,10 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
     //LottieView Animations
     implementation ("com.airbnb.android:lottie-compose:5.0.3")
+    //working with Coroutines
+    dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    }
     // end new libs
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

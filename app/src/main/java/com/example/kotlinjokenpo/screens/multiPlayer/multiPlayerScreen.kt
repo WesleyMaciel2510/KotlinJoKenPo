@@ -1,6 +1,7 @@
 package com.example.kotlinjokenpo.screens.multiPlayer
 
 import LottieAnimationView
+import android.graphics.drawable.Icon
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +20,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,31 +53,73 @@ import androidx.navigation.compose.rememberNavController
 import com.example.kotlinjokenpo.R
 import com.example.kotlinjokenpo.components.IconAndLabelButton
 import com.example.kotlinjokenpo.services.firebase.addNewRoom
-import com.example.kotlinjokenpo.services.firebase.checkConnection
 import com.example.kotlinjokenpo.services.firebase.searchRoom
 import com.example.kotlinjokenpo.ui.theme.KotlinJOKENPOTheme
 import com.example.kotlinjokenpo.utils.CountdownTimer
 import com.example.kotlinjokenpo.utils.determineWinner
 import com.example.kotlinjokenpo.utils.generateRandomChoice
 import com.example.kotlinjokenpo.utils.generateRoomNumber
-import com.google.firebase.FirebaseApp
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.kotlinjokenpo.data.PlayerStatus
+import com.example.kotlinjokenpo.data.PlayersStatus
+import com.example.kotlinjokenpo.services.firebase.PlayersStatusListener
 
 @Composable
 fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
     var roomSelected by remember { mutableStateOf(false) }
-    var roomNumber by remember { mutableStateOf(0) }
+    var roomNumber by remember { mutableIntStateOf(0) }
     var ready by remember { mutableStateOf(false) }
     var gameFinished by remember { mutableStateOf(false) }
     var countdown by remember { mutableIntStateOf(6) }
 
     var player by remember { mutableIntStateOf(1) }
+
     var player1Choice by remember { mutableIntStateOf(-1) } // -1 indicates no choice made
     var player2Choice by remember { mutableIntStateOf((-1)) }
+
     var resultMessage by remember { mutableStateOf("") }
     var countdownFinished by remember { mutableStateOf(false) }
     var openDialog by remember { mutableStateOf(false) }
 
-    // INIT =========================================================
+    // PLAYER STATUS LISTENER ===========================================
+    val playersStatus = remember { mutableStateOf(
+        PlayersStatus(
+        player1 = PlayerStatus(online = false, ready = false),
+        player2 = PlayerStatus(online = false, ready = false)
+        )
+    ) }
+    //Text to Display
+    val playerStatusText = when (player) {
+        1 -> {
+            when {
+                playersStatus.value.player1.online -> "Player 1 Online"
+                playersStatus.value.player2.online -> "Player 1 Online"
+                else -> "Player 1"
+            }
+        }
+        2 -> {
+            when {
+                playersStatus.value.player1.online -> "Player 2 Online"
+                playersStatus.value.player2.online -> "Player 2 Online"
+                else -> "Player 2"
+            }
+        }
+        else -> "Game Paused"
+    }
+    // ===============================================================
+    if (roomNumber > 0) {
+        val statusFlow = PlayersStatusListener(roomNumber.toString())
+        val status by statusFlow.collectAsState()
+
+        // Update the local state with the fetched status
+        LaunchedEffect(status) {
+            playersStatus.value = status
+        }
+    }
     // ===============================================================
 
     if (ready && countdown > 0 && !gameFinished) {
@@ -114,6 +155,17 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                Text(
+                    text = "Choose Your Room",
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Image(
                     painter = painterResource(id = R.drawable.multiplayer),
                     contentDescription = "Header",
@@ -127,6 +179,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                 RoomNumberDialog(
                     openDialog = openDialog,
                     onDismissRequest = { openDialog = false },
+                    icon = Icons.Default.Info,
                     onConfirmation = { roomTypedNumber ->
                         openDialog = false
                         // Handle the room number here
@@ -153,6 +206,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                             if (success) {
                                 Log.d("CreateRoom","Room $roomNumber added successfully.")
                                 roomSelected = true
+                                player = 1
                             } else {
                                 Log.d("CreateRoom","Failed to add room $roomNumber.")
                             }
@@ -169,6 +223,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                     onClick = {
                         Log.d("button", "Button Select a Room Clicked")
                         openDialog = true
+                        player = 2
                     }
                 )
             }
@@ -217,15 +272,16 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                /*Text(
-                text = "Player $player",
-                style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
-                ),
-                textAlign = TextAlign.Center
-            )*/
+
+                Text(
+                    text = playerStatusText,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 22.sp
+                    ),
+                    textAlign = TextAlign.Center
+                )
 
                 if (ready) {
                     Text(
@@ -307,6 +363,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 if (!ready || gameFinished) {
+                    // add Text here
                     IconAndLabelButton(
                         buttonLabel = if (gameFinished) "PLAY AGAIN" else "READY",
                         iconName = Icons.Default.PlayArrow,
@@ -322,11 +379,9 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                                 countdownFinished = false
                                 // Reset game state or navigate to a new game
                             } else {
-                                ready = true
-                                // Logic for "READY" button, such as updating game state in Firestore
+                                //check if the both players are ready
                             }
-                        }
-                    )
+                        })
                 }
 
                 if (gameFinished) {
@@ -361,17 +416,33 @@ fun PreviewMultiPlayerScreen() {
 fun RoomNumberDialog(
     openDialog: Boolean,
     onDismissRequest: () -> Unit,
-    onConfirmation: (String) -> Unit
-) {
+    onConfirmation: (String) -> Unit,
+    icon: ImageVector,
+    ) {
     var roomNumberToSearch by remember { mutableStateOf(TextFieldValue()) }
 
     if (openDialog) {
         AlertDialog(
             onDismissRequest = { onDismissRequest() },
+            icon = {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Info Icon",
+                    modifier = Modifier.size(44.dp)
+                )
+            },
             title = { Text("Enter Room Number") },
             text = {
-                Column {
-                    Text("Please enter the room number below:")
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                    text = "Please enter the room number below:",
+                        style = TextStyle(fontSize = 18.sp),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     TextField(
                         value = roomNumberToSearch,
@@ -389,7 +460,7 @@ fun RoomNumberDialog(
                 Button(
                     onClick = {
                         onConfirmation(roomNumberToSearch.text)
-                        roomNumberToSearch = TextFieldValue() // Clear the text field after confirmation
+                        roomNumberToSearch = TextFieldValue()
                     }
                 ) {
                     Text("Confirm")

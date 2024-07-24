@@ -28,7 +28,7 @@ fun IconAndLabelButton(
     iconName: ImageVector? = null,
     buttonLabel: String,
     buttonColor: Color,
-    onClick: () -> Unit,
+    onClick:  () -> Unit,
     borderColor: Color? = null,
 ) {
     Button(
