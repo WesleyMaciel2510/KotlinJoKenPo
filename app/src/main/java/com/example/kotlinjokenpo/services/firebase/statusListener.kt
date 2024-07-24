@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
-fun PlayersStatusListener(roomNumber: String): StateFlow<PlayersStatus> {
+fun playersStatusListener(roomNumber: String): StateFlow<PlayersStatus> {
     val database = FirebaseDatabase.getInstance()
     val player1OnlineRef = database.getReference("JokenPo/rooms/$roomNumber/players/player1/online")
     val player1ReadyRef = database.getReference("JokenPo/rooms/$roomNumber/players/player1/ready")
@@ -20,8 +20,8 @@ fun PlayersStatusListener(roomNumber: String): StateFlow<PlayersStatus> {
 
     val playersStatus = remember { MutableStateFlow(
         PlayersStatus(
-            player1 = PlayerStatus(online = false, ready = false),
-            player2 = PlayerStatus(online = false, ready = false)
+            player1 = PlayerStatus(online = false, ready = false, choice = ""),
+            player2 = PlayerStatus(online = false, ready = false, choice = "")
         )
     ) }
 

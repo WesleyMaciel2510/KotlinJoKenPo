@@ -66,7 +66,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.kotlinjokenpo.data.PlayerStatus
 import com.example.kotlinjokenpo.data.PlayersStatus
-import com.example.kotlinjokenpo.services.firebase.PlayersStatusListener
+import com.example.kotlinjokenpo.services.firebase.playersStatusListener
+import com.example.kotlinjokenpo.services.firebase.updatePlayerStatus
 
 @Composable
 fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
@@ -88,31 +89,25 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
     // PLAYER STATUS LISTENER ===========================================
     val playersStatus = remember { mutableStateOf(
         PlayersStatus(
-        player1 = PlayerStatus(online = false, ready = false),
-        player2 = PlayerStatus(online = false, ready = false)
+        player1 = PlayerStatus(online = false, ready = false, choice = ""),
+        player2 = PlayerStatus(online = false, ready = false, choice = "")
         )
     ) }
     //Text to Display
-    val playerStatusText = when (player) {
-        1 -> {
-            when {
-                playersStatus.value.player1.online -> "Player 1 Online"
-                playersStatus.value.player2.online -> "Player 1 Online"
-                else -> "Player 1"
-            }
-        }
-        2 -> {
-            when {
-                playersStatus.value.player1.online -> "Player 2 Online"
-                playersStatus.value.player2.online -> "Player 2 Online"
-                else -> "Player 2"
-            }
-        }
-        else -> "Game Paused"
+    val playerOnlineText = when (player) {
+        1 -> if (playersStatus.value.player1.online) "Player 1 Online" else "Player 1 Offline"
+        2 -> if (playersStatus.value.player2.online) "Player 2 Online" else "Player 2 Offline"
+        else -> "No Player Online"
+    }
+    // ===============================================================
+    val playerReadyText = when (player) {
+        1 -> if (playersStatus.value.player1.ready) "Player 1 Ready" else "Player 1 Not Ready"
+        2 -> if (playersStatus.value.player2.ready) "Player 2 Ready" else "Player 2 Not Ready"
+        else -> "Both Players are not Ready"
     }
     // ===============================================================
     if (roomNumber > 0) {
-        val statusFlow = PlayersStatusListener(roomNumber.toString())
+        val statusFlow = playersStatusListener(roomNumber.toString())
         val status by statusFlow.collectAsState()
 
         // Update the local state with the fetched status
@@ -274,7 +269,7 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
 
 
                 Text(
-                    text = playerStatusText,
+                    text ="$playerOnlineText\n$playerReadyText",
                     style = TextStyle(
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -379,7 +374,10 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                                 countdownFinished = false
                                 // Reset game state or navigate to a new game
                             } else {
+                                //set ready in 'player'
+                                updatePlayerStatus(player = player, roomNumber = roomNumber.toString(), isReady = true)
                                 //check if the both players are ready
+
                             }
                         })
                 }
