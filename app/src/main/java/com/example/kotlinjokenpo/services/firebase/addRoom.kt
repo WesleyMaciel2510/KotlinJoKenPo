@@ -30,7 +30,6 @@ fun addNewRoom(roomNumber: String,  callback: (Boolean) -> Unit) {
             )
         ),
         "game_status" to mapOf(
-            "state" to "waiting_for_players",
             "timeout_duration" to 5
         )
     )

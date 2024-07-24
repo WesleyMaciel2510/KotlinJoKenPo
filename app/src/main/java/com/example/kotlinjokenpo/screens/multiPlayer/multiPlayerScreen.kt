@@ -75,12 +75,12 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
     var roomNumber by remember { mutableIntStateOf(0) }
     var ready by remember { mutableStateOf(false) }
     var gameFinished by remember { mutableStateOf(false) }
-    var countdown by remember { mutableIntStateOf(6) }
+    var countdown by remember { mutableIntStateOf(11) }
 
     var player by remember { mutableIntStateOf(1) }
 
     var player1Choice by remember { mutableIntStateOf(-1) } // -1 indicates no choice made
-    var player2Choice by remember { mutableIntStateOf((-1)) }
+    var player2Choice by remember { mutableIntStateOf((-1)) } // -1 indicates no choice made
 
     var resultMessage by remember { mutableStateOf("") }
     var countdownFinished by remember { mutableStateOf(false) }
@@ -281,9 +281,9 @@ fun MultiPlayerScreen(navController: NavController, modifier: Modifier) {
                 if (ready) {
                     fun getChoiceText(choice: Int): String {
                         return when (choice) {
-                            0 -> "You chose Rock"
-                            1 -> "You chose Paper"
-                            2 -> "You chose Scissors"
+                            0 -> "You choose Rock"
+                            1 -> "You choose Paper"
+                            2 -> "You choose Scissors"
                             else -> "Make a choice"
                         }
                     }
