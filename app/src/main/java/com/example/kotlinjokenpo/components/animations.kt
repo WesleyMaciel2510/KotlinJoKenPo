@@ -17,7 +17,8 @@ fun LottieAnimationView(
     modifier: Modifier = Modifier,
     animationName: Int,
     looping: Boolean = true,
-    isPlaying: Boolean = true
+    isPlaying: Boolean = true,
+    speed: Float = 1f
 ) {
     // Load the Lottie animation JSON file
     val composition by rememberLottieComposition(
@@ -32,6 +33,7 @@ fun LottieAnimationView(
         composition = composition,
         iterations = iterations,
         isPlaying = isPlaying,
+        speed = speed,
         restartOnPlay = true
     )
 

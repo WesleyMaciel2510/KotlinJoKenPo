@@ -6,3 +6,7 @@ fun generateRandomChoice(): Int {
     return Random.nextInt(0, 3)
     // Generates a random number between 0 and 2
 }
+
+fun generateRoomNumber(): Int {
+    return (10000..99999).random()
+}

@@ -65,13 +65,13 @@ fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) 
                     navController.navigate("singlePlayer")
                 })
 
-            IconAndLabelButton(buttonLabel = "Multi Player",
+            IconAndLabelButton(buttonLabel = "Multiplayer",
                 iconName = Icons.Default.Face,
                 buttonColor = Color(0xFF7F44D4),
                 onClick = {
                     Log.d("button", "Button onMultiPlayerClick Clicked ")
                     /*onMultiPlayerClick*/
-                    navController.navigate("multiPlayer")
+                    navController.navigate("multiplayer")
                 })
         }
     }

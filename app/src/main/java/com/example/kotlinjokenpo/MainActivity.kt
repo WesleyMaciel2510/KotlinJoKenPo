@@ -60,14 +60,6 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val navController = rememberNavController()
     Scaffold(
-        // add here what is fixed
-        topBar = {
-            TopAppBar(
-                title = { Text("Jo-Ken-Po") },
-                Modifier.background(Color(0xFF7F44D4)),
-                //contentColor = Color.White
-            )
-        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
