@@ -34,12 +34,16 @@ https://github.com/user-attachments/assets/f861d066-e8cb-461d-81ad-378857535150
 - Kotlin Coroutines: Supports asynchronous programming and smooth background task execution.
   
 ## Firebase Integration 🔥
+
 🔥 Firebase Realtime Database: com.google.firebase:firebase-database
 Allows for real-time data synchronization between devices. Updates from one player are instantly reflected to the other.
+
 🔥 Firebase BoM (Bill of Materials): platform("com.google.firebase:firebase-bom:33.1.2")
 Manages versions of Firebase libraries to ensure compatibility without specifying versions for individual Firebase dependencies.
+
 🔥 Firebase Core: com.google.firebase:firebase-core:21.0.0
 Essential for initializing Firebase services in the app.
+
 🔥 Firebase Firestore: com.google.firebase:firebase-firestore-ktx
 Provides cloud-based NoSQL database capabilities for more advanced data management.
 
