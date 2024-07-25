@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/f861d066-e8cb-461d-81ad-378857535150
 
 ## Features 🛠️
 - Realtime Multiplayer Gameplay: Connect and play with another player in real-time.
-- Countdown Timer: A 6-second countdown to make choices.
+- Countdown Timer: A 5-second countdown to make choices.
 - Choice Selection: Players can choose Rock, Paper, or Scissors.
 - Result Display: Shows the game result after choices are made.
 - Room Management: Create or join game rooms.
