@@ -3,6 +3,8 @@
 
 A Realtime Single or Multiplayer Jokenpo App designed to connect two devices with synced data for Multiplayer Game. The Application utilizes the free Realtime Database from Firebase integrating the updates from one player to another. 
 
+![multiplayer](https://github.com/user-attachments/assets/75c0bf7a-4175-4cd3-92a6-463b3b87e237)
+
 ## Demonstration 🎁
 
 https://github.com/user-attachments/assets/f861d066-e8cb-461d-81ad-378857535150
