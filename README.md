@@ -1,4 +1,4 @@
-﻿# 🔵 KotlinJoKenPo ✌️✋✊
+﻿# 🔵 KotlinJoKenPo Firebase PVP ✌️✋✊
 ![image](https://github.com/user-attachments/assets/6a1f52a2-3498-44fb-89f2-c80fe5729616)
 
 A Realtime Single or Multiplayer Jokenpo App designed to connect two devices with synced data for Multiplayer Game. The Application utilizes the free Realtime Database from Firebase integrating the updates from one player to another. 
